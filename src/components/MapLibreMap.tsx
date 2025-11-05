@@ -68,8 +68,8 @@ export const MapLibreMap = () => {
       onClick={onMapClick}
     >
       <Overlay>
-        <h2>Dette er et overlay</h2>
-        <p>Legg til funksjonalitet knyttet til kartet.</p>
+        <h2>Søk</h2>
+        <p>Her kan du søke etter ditt favoritt hus!</p>
         <SearchBar setAddress={setAddress} />
         <Switch
             checked={showTerrain}
@@ -90,14 +90,15 @@ export const MapLibreMap = () => {
 
       </Overlay>
       <DrawComponent />
-      
-{clickPoint && (
-  <RPopup longitude={clickPoint.lng} latitude={clickPoint.lat}>
-    <div>
-      <strong>Height:</strong> {pointHoyde !== undefined ? `${pointHoyde} m` : 'Loading...'}
-    </div>
-  </RPopup>
-)}
+
+      {clickPoint && (
+        <RPopup longitude={clickPoint.lng} latitude={clickPoint.lat}>
+          <div>
+            <strong>Height:</strong>{' '}
+            {pointHoyde !== undefined ? `${pointHoyde} m` : 'Loading...'}
+          </div>
+        </RPopup>
+      )}
 
       {bygningsOmriss && (
         <>
