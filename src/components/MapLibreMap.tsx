@@ -64,6 +64,8 @@ export const MapLibreMap = () => {
         <h2>Søk</h2>
         <p>Her kan du søke etter ditt favoritt hus!</p>
         <SearchBar setAddress={setAddress} />
+        <h3>Høyde (moh.): </h3> {pointHoyde !== undefined ? `${pointHoyde} m` : 'Vennligst velg et punkt'}
+
       </Overlay>
       <DrawComponent />
 

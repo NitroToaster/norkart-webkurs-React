@@ -11,4 +11,26 @@ export const getTakflateDataForPunkt = async (x: number, y: number) => {
 
   // Når du har fått til kallet til API-et kan du se i Network-taben i nettleseren eller i
   // konsollen for å se hvordan responsen ser ut.
+
+  try {
+    const apiResult = await fetch(query, {
+      method: 'GET',
+      headers: {
+        Accept: 'application/json',
+        'X-WAAPI-TOKEN': `${apiKey}`,
+      },
+    });
+    //want to use get bygningAtpunkt here
+    if (apiResult.ok) {
+      const data = await apiResult.json();
+      console.log(data)
+      return data.Options;
+    } else {
+      console.error('API request failed with status:', apiResult.status);
+      return [];
+    }
+  } catch (error) {
+    console.error('An error occurred while fetching data:', error);
+    return [];
+  }
 };
