@@ -72,7 +72,7 @@ export const MapLibreMap = () => {
         <p>Her kan du søke etter ditt favoritt hus!</p>
         <SearchBar setAddress={setAddress} />
         <h3>Høyde (moh.): </h3> {pointHoyde !== undefined ? `${pointHoyde} m` : 'Vennligst velg et punkt'}
-
+        <br />
         <Switch
             checked={showTerrain}
             onChange={(e) => setShowTerrain(e.target.checked)}
