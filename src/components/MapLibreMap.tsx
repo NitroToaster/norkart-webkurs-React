@@ -1,7 +1,13 @@
 import { SearchBar, type Address } from './SearchBar';
 import { LngLat, type MapLayerMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { RLayer, RMap, RSource, useMap, RPopup } from 'maplibre-react-components';
+import {
+  RLayer,
+  RMap,
+  RSource,
+  useMap,
+  RPopup,
+} from 'maplibre-react-components';
 import { getHoydeFromPunkt } from '../api/getHoydeFromPunkt';
 import { useEffect, useState } from 'react';
 import { Overlay } from './Overlay';
@@ -55,19 +61,20 @@ export const MapLibreMap = () => {
       onClick={onMapClick}
     >
       <Overlay>
-        <h2>Dette er et overlay</h2>
-        <p>Legg til funksjonalitet knyttet til kartet.</p>
+        <h2>Søk</h2>
+        <p>Her kan du søke etter ditt favoritt hus!</p>
         <SearchBar setAddress={setAddress} />
       </Overlay>
       <DrawComponent />
-      
-{clickPoint && (
-  <RPopup longitude={clickPoint.lng} latitude={clickPoint.lat}>
-    <div>
-      <strong>Height:</strong> {pointHoyde !== undefined ? `${pointHoyde} m` : 'Loading...'}
-    </div>
-  </RPopup>
-)}
+
+      {clickPoint && (
+        <RPopup longitude={clickPoint.lng} latitude={clickPoint.lat}>
+          <div>
+            <strong>Height:</strong>{' '}
+            {pointHoyde !== undefined ? `${pointHoyde} m` : 'Loading...'}
+          </div>
+        </RPopup>
+      )}
 
       {bygningsOmriss && (
         <>
@@ -81,12 +88,12 @@ export const MapLibreMap = () => {
         </>
       )}
       {address && (
-      <MapFlyTo
-         lngLat={
-         new LngLat(address.PayLoad.Posisjon.X, address.PayLoad.Posisjon.Y)
-         }
-      />
-   )}
+        <MapFlyTo
+          lngLat={
+            new LngLat(address.PayLoad.Posisjon.X, address.PayLoad.Posisjon.Y)
+          }
+        />
+      )}
     </RMap>
   );
 };
