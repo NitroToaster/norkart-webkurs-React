@@ -1,3 +1,4 @@
+import { SearchBar, type Address } from './SearchBar';
 import { LngLat, type MapLayerMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
 import { RMap, useMap } from 'maplibre-react-components';
@@ -12,6 +13,7 @@ export const MapLibreMap = () => {
   const [pointHoyde, setPointHoydeAtPunkt] = useState<number | undefined>(
     undefined
   );
+  const [address, setAddress] = useState<Address | null>(null);
   const [clickPoint, setClickPoint] = useState<LngLat | undefined>(undefined);
 
   useEffect(() => {
@@ -38,6 +40,7 @@ export const MapLibreMap = () => {
       <Overlay>
         <h2>Dette er et overlay</h2>
         <p>Legg til funksjonalitet knyttet til kartet.</p>
+        <SearchBar setAddress={setAddress}/>
       </Overlay>
       <DrawComponent />
     </RMap>
