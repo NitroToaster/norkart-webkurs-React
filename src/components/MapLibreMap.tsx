@@ -1,7 +1,7 @@
 import { SearchBar, type Address } from './SearchBar';
 import { LngLat, type MapLayerMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import { RMap, useMap } from 'maplibre-react-components';
+import { RMap, useMap, RPopup } from 'maplibre-react-components';
 import { getHoydeFromPunkt } from '../api/getHoydeFromPunkt';
 import { useEffect, useState } from 'react';
 import { Overlay } from './Overlay';
@@ -43,6 +43,15 @@ export const MapLibreMap = () => {
         <SearchBar setAddress={setAddress}/>
       </Overlay>
       <DrawComponent />
+      
+{clickPoint && (
+  <RPopup longitude={clickPoint.lng} latitude={clickPoint.lat}>
+    <div>
+      <strong>Height:</strong> {pointHoyde !== undefined ? `${pointHoyde} m` : 'Loading...'}
+    </div>
+  </RPopup>
+)}
+
     </RMap>
   );
 };
