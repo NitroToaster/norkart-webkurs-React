@@ -1,19 +1,22 @@
 import { SearchBar, type Address } from './SearchBar';
 import { LngLat, type MapLayerMouseEvent } from 'maplibre-gl';
 import 'maplibre-gl/dist/maplibre-gl.css';
-import {
-  RLayer,
-  RMap,
-  RSource,
-  useMap,
-  RPopup,
-} from 'maplibre-react-components';
+import { RLayer, RMap, RSource, useMap, RPopup, RTerrain } from 'maplibre-react-components';
 import { getHoydeFromPunkt } from '../api/getHoydeFromPunkt';
 import { useEffect, useState } from 'react';
 import { Overlay } from './Overlay';
 import DrawComponent from './DrawComponent';
 import { getBygningAtPunkt } from '../api/getBygningAtPunkt';
 import type { GeoJSON } from 'geojson';
+/*RTerrain expansion*/
+// import Toggle from "pentatrion-design";
+import { Switch } from "@mui/material";
+
+const rasterDemTiles = [
+  "https://s3.amazonaws.com/elevation-tiles-prod/terrarium/{z}/{x}/{y}.png",
+];
+const center = { lng: 6.4, lat: 46.1 };
+
 
 const TRONDHEIM_COORDS: [number, number] = [10.40565401, 63.4156575];
 const polygonStyle = {
@@ -22,6 +25,10 @@ const polygonStyle = {
 };
 
 export const MapLibreMap = () => {
+  /*RTerrain expansion */
+  const [showTerrain, setShowTerrain] = useState(false);
+  const [exaggeration, setExaggeration] = useState(1.3);
+
   const [pointHoyde, setPointHoydeAtPunkt] = useState<number | undefined>(
     undefined
   );
@@ -66,6 +73,23 @@ export const MapLibreMap = () => {
         <SearchBar setAddress={setAddress} />
         <h3>Høyde (moh.): </h3> {pointHoyde !== undefined ? `${pointHoyde} m` : 'Vennligst velg et punkt'}
 
+        <Switch
+            checked={showTerrain}
+            onChange={(e) => setShowTerrain(e.target.checked)}
+          />
+        <div className="flex justify-between gap-2">
+          Exaggeration
+          <input
+            type="range"
+            min={0}
+            max={2}
+            step={0.1}
+            value={exaggeration}
+            onChange={(e) => setExaggeration(e.target.valueAsNumber)}
+          />
+          <span className="w-8">{exaggeration}</span>
+          </div>
+
       </Overlay>
       <DrawComponent />
 
@@ -80,7 +104,12 @@ export const MapLibreMap = () => {
 
       {bygningsOmriss && (
         <>
-          <RSource id="bygning" type="geojson" data={bygningsOmriss} />
+          <RSource 
+          id="bygning"
+          type="geojson"
+          data={bygningsOmriss}
+          />
+
           <RLayer
             source="bygning"
             id="bygning-fill"
@@ -90,11 +119,25 @@ export const MapLibreMap = () => {
         </>
       )}
       {address && (
-        <MapFlyTo
-          lngLat={
-            new LngLat(address.PayLoad.Posisjon.X, address.PayLoad.Posisjon.Y)
-          }
-        />
+      <MapFlyTo
+         lngLat={
+         new LngLat(address.PayLoad.Posisjon.X, address.PayLoad.Posisjon.Y)
+         }
+      />
+   )}
+
+   <RSource
+        type="raster-dem"
+        id="terrarium"
+        tiles={rasterDemTiles}
+        encoding="terrarium"
+        tileSize={256}
+      />
+   {showTerrain && (
+        <>
+          <RLayer id="hillshade" type="hillshade" source="terrarium" />
+          <RTerrain source="terrarium" exaggeration={exaggeration} />
+        </>
       )}
     </RMap>
   );
