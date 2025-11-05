@@ -19,7 +19,7 @@ const Header = () => {
   return (
     <header style={styles}>
       <img height="50px" src={NorkartLogo} />
-      <h1 style={{ fontSize: '1.5rem' }}>Norkart Workshop</h1>
+      <h1 style={{ fontSize: '1.5rem' }}>Runke-Gutta Method</h1>
     </header>
   );
 };
