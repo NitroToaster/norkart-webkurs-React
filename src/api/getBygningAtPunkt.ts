@@ -23,7 +23,9 @@ export const getBygningAtPunkt = async (x: number, y: number) => {
 
     if (apiResult.ok) {
       const data = await apiResult.json();
-      return data.Options;
+      console.log(data);
+      console.log(data.Bygninger[0]);
+      return data.Bygninger[0];
     } else {
       console.error('API request failed with status:', apiResult.status);
       return [];
